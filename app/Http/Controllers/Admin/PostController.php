@@ -49,14 +49,24 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'lyrics' => 'nullable|string',
-            'cover_type' => 'required|in:image,embed',
+            'cover_type' => 'required|in:image,embed,upload',
             'cover_image' => 'nullable|string|max:500',
+            'cover_upload' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'embed_url' => 'nullable|string|max:500',
             'is_published' => 'boolean',
             'is_for_sale' => 'boolean',
             'music_role' => 'nullable|string|in:arranger,songwriter,both',
             'project_url' => 'nullable|url|max:500',
         ]);
+
+        // Handle file upload
+        if ($request->hasFile('cover_upload') && $validated['cover_type'] === 'upload') {
+            $file = $request->file('cover_upload');
+            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/covers'), $filename);
+            $validated['cover_image'] = '/uploads/covers/' . $filename;
+            $validated['cover_type'] = 'image'; // Store as image type
+        }
 
         $validated['user_id'] = auth()->id();
         $validated['slug'] = Str::slug($validated['title']);
@@ -86,14 +96,32 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'lyrics' => 'nullable|string',
-            'cover_type' => 'required|in:image,embed',
+            'cover_type' => 'required|in:image,embed,upload',
             'cover_image' => 'nullable|string|max:500',
+            'cover_upload' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'embed_url' => 'nullable|string|max:500',
             'is_published' => 'boolean',
             'is_for_sale' => 'boolean',
             'music_role' => 'nullable|string|in:arranger,songwriter,both',
             'project_url' => 'nullable|url|max:500',
         ]);
+
+        // Handle file upload
+        if ($request->hasFile('cover_upload') && $validated['cover_type'] === 'upload') {
+            // Delete old uploaded file if exists
+            if ($post->cover_image && str_starts_with($post->cover_image, '/uploads/covers/')) {
+                $oldFile = public_path($post->cover_image);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
+            
+            $file = $request->file('cover_upload');
+            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/covers'), $filename);
+            $validated['cover_image'] = '/uploads/covers/' . $filename;
+            $validated['cover_type'] = 'image'; // Store as image type
+        }
 
         $validated['slug'] = Str::slug($validated['title']);
         

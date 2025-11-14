@@ -11,7 +11,7 @@
             <h1 class="text-3xl sm:text-4xl font-bold">Create New Post</h1>
         </div>
 
-        <form action="{{ route('admin.posts.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <!-- Category -->
@@ -71,9 +71,13 @@
             </div>
 
             <!-- Cover Type -->
-            <div class="bg-white border-2 border-gray-200 rounded-lg p-4 sm:p-6 hover:border-gray-300 transition" x-data="{ coverType: '{{ old('cover_type', 'image') }}' }">
+            <div class="bg-white border-2 border-gray-200 rounded-lg p-4 sm:p-6 hover:border-gray-300 transition" x-data="{ coverType: '{{ old('cover_type', 'upload') }}' }">
                 <label class="block text-sm font-semibold mb-4">Cover Type *</label>
-                <div class="flex gap-6 mb-6">
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input type="radio" name="cover_type" value="upload" x-model="coverType" class="w-4 h-4 text-black">
+                        <span class="text-sm font-medium group-hover:text-black transition">Upload Image</span>
+                    </label>
                     <label class="flex items-center gap-2 cursor-pointer group">
                         <input type="radio" name="cover_type" value="image" x-model="coverType" class="w-4 h-4 text-black">
                         <span class="text-sm font-medium group-hover:text-black transition">Image URL</span>
@@ -84,12 +88,25 @@
                     </label>
                 </div>
 
+                <div x-show="coverType === 'upload'" x-transition>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload Image File</label>
+                    <input type="file" name="cover_upload" accept="image/*"
+                           class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:ring-0 transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800">
+                    <p class="text-xs text-gray-500 mt-2">Upload gambar dari komputer (Max: 2MB, Format: JPG, PNG, WebP)</p>
+                    @error('cover_upload')
+                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <div x-show="coverType === 'image'" x-transition>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
                     <input type="url" name="cover_image" value="{{ old('cover_image') }}" 
                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:ring-0 transition"
                            placeholder="https://example.com/image.jpg">
                     <p class="text-xs text-gray-500 mt-2">Direct link to image file</p>
+                    @error('cover_image')
+                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div x-show="coverType === 'embed'" x-transition>
@@ -98,6 +115,9 @@
                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:ring-0 transition"
                            placeholder="https://www.youtube.com/watch?v=...">
                     <p class="text-xs text-gray-500 mt-2">Paste YouTube link, it will be converted automatically</p>
+                    @error('embed_url')
+                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
