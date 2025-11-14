@@ -397,8 +397,18 @@
             </div>
         </div>
         
+        <!-- Disabled Tooltip (shown when not introduced) -->
+        <div id="disabledTooltip" class="absolute bottom-full right-0 mb-3 opacity-0 transition-all duration-300 pointer-events-none">
+            <div class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-xl whitespace-nowrap text-sm font-medium">
+                Kenalan dulu yuk! 😊
+                <div class="absolute top-full right-6 -mt-1">
+                    <div class="border-8 border-transparent border-t-red-600"></div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Button -->
-        <button id="messageButton" onclick="openMessageForm()" class="bg-black text-white p-3 sm:p-4 rounded-full shadow-2xl hover:bg-gray-800 transition-all hover:scale-110 relative">
+        <button id="messageButton" onclick="handleMessageButtonClick()" class="bg-black text-white p-3 sm:p-4 rounded-full shadow-2xl hover:bg-gray-800 transition-all hover:scale-110 relative @if(!$hasIntroduced && !auth()->check()) opacity-50 cursor-not-allowed @endif">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
             </svg>
@@ -447,6 +457,9 @@
     </div>
 
     <script>
+        // Track if user has introduced themselves
+        let hasIntroduced = {{ $hasIntroduced || auth()->check() ? 'true' : 'false' }};
+
         async function submitIntro(event) {
             event.preventDefault();
             
@@ -468,10 +481,42 @@
                 
                 if (response.ok) {
                     document.getElementById('welcomeModal').style.display = 'none';
+                    hasIntroduced = true;
+                    
+                    // Enable message button
+                    const messageButton = document.getElementById('messageButton');
+                    messageButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    messageButton.classList.add('hover:bg-gray-800', 'hover:scale-110');
                 }
             } catch (error) {
                 console.error('Error:', error);
             }
+        }
+
+        // Handle message button click
+        function handleMessageButtonClick() {
+            if (!hasIntroduced) {
+                // Show disabled tooltip
+                const disabledTooltip = document.getElementById('disabledTooltip');
+                disabledTooltip.style.opacity = '1';
+                disabledTooltip.style.transform = 'translateY(0)';
+                
+                // Shake the button
+                const button = document.getElementById('messageButton');
+                button.classList.add('animate-shake');
+                
+                // Hide tooltip and stop shake after 2 seconds
+                setTimeout(() => {
+                    button.classList.remove('animate-shake');
+                    disabledTooltip.style.opacity = '0';
+                    disabledTooltip.style.transform = 'translateY(10px)';
+                }, 2000);
+                
+                return;
+            }
+            
+            // If introduced, open message form
+            openMessageForm();
         }
 
         function switchMode(mode) {
@@ -652,6 +697,9 @@
 
         // Shake message button every 10 seconds with tooltip
         function shakeMessageButton() {
+            // Only shake if user has introduced themselves
+            if (!hasIntroduced) return;
+            
             const button = document.getElementById('messageButton');
             const tooltip = document.getElementById('messageTooltip');
             
