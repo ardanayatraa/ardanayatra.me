@@ -28,8 +28,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-6">
                 <div class="flex-1">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 text-white" id="heroTitle">Music Portfolio</h2>
-                    <p class="text-sm sm:text-base md:text-lg text-white leading-relaxed" id="heroSubtitle">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4" id="heroTitle">Music Portfolio</h2>
+                    <p class="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed" id="heroSubtitle">
                         Mari bersama-sama melestarikan bahasa dan budaya Bali melalui lagu Bali.
                     </p>
                 </div>
@@ -45,11 +45,11 @@
             
             <!-- Copyright Notice -->
             <div class="border-t border-white/10 pt-3">
-                <p class="text-xs text-white text-center">
-                    © Seluruh karya adalah hak cipta <span class="font-semibold">I Made Ardana Yatra</span> sebagai penulis lagu dan arranger musik. Dilarang menggunakan tanpa izin tertulis. 
+                <p class="text-xs text-gray-400 text-center">
+                    © Seluruh karya adalah hak cipta <span class="text-white font-semibold">I Made Ardana Yatra</span> sebagai penulis lagu dan arranger musik. Dilarang menggunakan tanpa izin tertulis. 
                     <a href="https://www.hukumonline.com/pusatdata/detail/lt5460681737444/undang-undang-nomor-28-tahun-2014/" 
                        target="_blank"
-                       class="text-white hover:text-white/80 underline transition">
+                       class="text-gray-300 hover:text-white underline transition">
                         (Lihat UU Hak Cipta)
                     </a>
                 </p>
@@ -599,11 +599,7 @@
                 musicContent.classList.add('hidden');
                 heroTitle.textContent = 'Coding Projects';
                 heroSubtitle.textContent = 'Yang butuh jasa pembuatan website bisa langsung hubungi kontak tertera (business only).';
-                
-                // Random color for coding mode
-                const colors = ['bg-color-red', 'bg-color-yellow', 'bg-color-green'];
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                heroSection.className = `${randomColor} text-white py-12 md:py-20 border-b border-gray-800`;
+                heroSection.className = 'bg-stailo-green text-white py-12 md:py-20 border-b border-green-900';
             }
             
             // Save preference
@@ -804,20 +800,7 @@
 
     <style>
         .bg-stailo-green {
-            background-color: #10b981;
-            transition: background-color 1s ease-in-out;
-        }
-        
-        .bg-color-red {
-            background-color: #ef4444 !important;
-        }
-        
-        .bg-color-yellow {
-            background-color: #eab308 !important;
-        }
-        
-        .bg-color-green {
-            background-color: #10b981 !important;
+            background-color: #84cc16;
         }
         
         .mode-btn {
