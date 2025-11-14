@@ -28,8 +28,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-6">
                 <div class="flex-1">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4" id="heroTitle">Music Portfolio</h2>
-                    <p class="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed" id="heroSubtitle">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 text-white" id="heroTitle">Music Portfolio</h2>
+                    <p class="text-sm sm:text-base md:text-lg text-white leading-relaxed" id="heroSubtitle">
                         Mari bersama-sama melestarikan bahasa dan budaya Bali melalui lagu Bali.
                     </p>
                 </div>
@@ -45,11 +45,11 @@
             
             <!-- Copyright Notice -->
             <div class="border-t border-white/10 pt-3">
-                <p class="text-xs text-gray-400 text-center">
-                    © Seluruh karya adalah hak cipta <span class="text-white font-semibold">I Made Ardana Yatra</span> sebagai penulis lagu dan arranger musik. Dilarang menggunakan tanpa izin tertulis. 
+                <p class="text-xs text-white text-center">
+                    © Seluruh karya adalah hak cipta <span class="font-semibold">I Made Ardana Yatra</span> sebagai penulis lagu dan arranger musik. Dilarang menggunakan tanpa izin tertulis. 
                     <a href="https://www.hukumonline.com/pusatdata/detail/lt5460681737444/undang-undang-nomor-28-tahun-2014/" 
                        target="_blank"
-                       class="text-gray-300 hover:text-white underline transition">
+                       class="text-white hover:text-white/80 underline transition">
                         (Lihat UU Hak Cipta)
                     </a>
                 </p>
