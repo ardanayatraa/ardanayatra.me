@@ -90,18 +90,37 @@
                             <a href="{{ route('posts.show', $post->slug) }}" class="block">
                                 <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:border-black transition">
                                     @if($post->cover_type === 'image' && $post->cover_image)
-                                        <div class="h-96 overflow-hidden bg-gray-100">
+                                        <div class="relative h-96 overflow-hidden bg-gray-100">
                                             <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                                            @if($post->is_for_sale)
+                                                <div class="absolute top-4 right-4">
+                                                    <span class="badge-dijual inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded shadow-lg">DIJUAL</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     @elseif($post->cover_type === 'embed' && $post->embed_url)
-                                        <div class="h-96 bg-black">
+                                        <div class="relative h-96 bg-black">
                                             <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
+                                            @if($post->is_for_sale)
+                                                <div class="absolute top-4 right-4">
+                                                    <span class="badge-dijual inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded shadow-lg">DIJUAL</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     @else
                                         <div class="h-96 bg-gray-900"></div>
                                     @endif
                                     <div class="p-6">
-                                        <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium rounded mb-3">{{ $post->category->name }}</span>
+                                        <div class="flex flex-wrap items-center gap-2 mb-3">
+                                            <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium rounded">{{ $post->category->name }}</span>
+                                            @if($post->music_role === 'arranger')
+                                                <span class="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded">Arranger</span>
+                                            @elseif($post->music_role === 'songwriter')
+                                                <span class="inline-block px-3 py-1 bg-purple-600 text-white text-xs font-medium rounded">Pencipta Lagu</span>
+                                            @elseif($post->music_role === 'both')
+                                                <span class="inline-block px-3 py-1 bg-indigo-600 text-white text-xs font-medium rounded">Arranger & Pencipta Lagu</span>
+                                            @endif
+                                        </div>
                                         <h3 class="text-2xl font-bold mb-2">{{ $post->title }}</h3>
                                         <p class="text-gray-600">{{ Str::limit($post->description, 150) }}</p>
                                     </div>
@@ -136,15 +155,39 @@
                             @if($post->cover_type === 'image' && $post->cover_image)
                                 <div class="relative h-64 overflow-hidden bg-gray-100">
                                     <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300">
-                                    <div class="absolute bottom-4 left-4 right-4">
+                                    @if($post->is_for_sale)
+                                        <div class="absolute top-4 right-4">
+                                            <span class="badge-dijual inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded shadow-lg">DIJUAL</span>
+                                        </div>
+                                    @endif
+                                    <div class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
                                         <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium">{{ $post->category->name }}</span>
+                                        @if($post->music_role === 'arranger')
+                                            <span class="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-medium">Arranger</span>
+                                        @elseif($post->music_role === 'songwriter')
+                                            <span class="inline-block px-3 py-1 bg-purple-600 text-white text-xs font-medium">Pencipta Lagu</span>
+                                        @elseif($post->music_role === 'both')
+                                            <span class="inline-block px-3 py-1 bg-indigo-600 text-white text-xs font-medium">Arranger & Pencipta Lagu</span>
+                                        @endif
                                     </div>
                                 </div>
                             @elseif($post->cover_type === 'embed' && $post->embed_url)
                                 <div class="relative h-64 overflow-hidden bg-black">
                                     <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
-                                    <div class="absolute bottom-4 left-4 right-4">
+                                    @if($post->is_for_sale)
+                                        <div class="absolute top-4 right-4">
+                                            <span class="badge-dijual inline-block px-3 py-1 bg-green-600 text-white text-xs font-bold rounded shadow-lg">DIJUAL</span>
+                                        </div>
+                                    @endif
+                                    <div class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
                                         <span class="inline-block px-3 py-1 bg-white/90 text-black text-xs font-medium">{{ $post->category->name }}</span>
+                                        @if($post->music_role === 'arranger')
+                                            <span class="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-medium">Arranger</span>
+                                        @elseif($post->music_role === 'songwriter')
+                                            <span class="inline-block px-3 py-1 bg-purple-600 text-white text-xs font-medium">Pencipta Lagu</span>
+                                        @elseif($post->music_role === 'both')
+                                            <span class="inline-block px-3 py-1 bg-indigo-600 text-white text-xs font-medium">Arranger & Pencipta Lagu</span>
+                                        @endif
                                     </div>
                                 </div>
                             @else
@@ -173,26 +216,24 @@
                 <div id="codingSlider" class="flex transition-transform duration-500 ease-in-out">
                     @foreach($featuredPosts->where('category.slug', 'coding')->take(3) as $post)
                         <div class="min-w-full">
-                            <a href="{{ route('posts.show', $post->slug) }}" class="block">
-                                <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:border-black transition">
-                                    @if($post->cover_type === 'image' && $post->cover_image)
-                                        <div class="h-96 overflow-hidden bg-gray-100">
-                                            <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
-                                        </div>
-                                    @elseif($post->cover_type === 'embed' && $post->embed_url)
-                                        <div class="h-96 bg-black">
-                                            <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
-                                        </div>
-                                    @else
-                                        <div class="h-96 bg-gray-900"></div>
-                                    @endif
-                                    <div class="p-6">
-                                        <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium rounded mb-3">{{ $post->category->name }}</span>
-                                        <h3 class="text-2xl font-bold mb-2">{{ $post->title }}</h3>
-                                        <p class="text-gray-600">{{ Str::limit($post->description, 150) }}</p>
+                            <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:border-black transition">
+                                @if($post->cover_type === 'image' && $post->cover_image)
+                                    <div class="h-96 overflow-hidden bg-gray-100">
+                                        <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
                                     </div>
-                                </div>
-                            </a>
+                                @elseif($post->cover_type === 'embed' && $post->embed_url)
+                                    <div class="h-96 bg-black">
+                                        <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
+                                    </div>
+                                @else
+                                    <div class="h-96 bg-gray-900"></div>
+                                @endif
+                                <a href="{{ route('posts.show', $post->slug) }}" class="block p-6 hover:bg-gray-50 transition">
+                                    <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium rounded mb-3">{{ $post->category->name }}</span>
+                                    <h3 class="text-2xl font-bold mb-2 hover:underline">{{ $post->title }}</h3>
+                                    <p class="text-gray-600">{{ Str::limit($post->description, 150) }}</p>
+                                </a>
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -219,27 +260,20 @@
                 @foreach($featuredPosts->where('category.slug', 'coding') as $post)
                     <div class="group">
                         <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-black transition-all duration-300">
-                            @if($post->project_url)
-                                {{-- If has project URL, show iframe preview with clickable overlay --}}
-                                <a href="{{ $post->project_url }}" target="_blank" class="block relative h-64 overflow-hidden bg-white group/cover">
-                                    {{-- Iframe preview scaled to desktop view --}}
-                                    <div class="w-full h-full overflow-hidden">
-                                        <iframe src="{{ $post->project_url }}" 
-                                                class="pointer-events-none origin-top-left" 
-                                                style="width: 1280px; height: 800px; transform: scale(0.3125); transform-origin: top left;"
-                                                frameborder="0"
-                                                loading="lazy"></iframe>
-                                    </div>
+                            @if($post->project_url && $post->cover_image)
+                                {{-- If has project URL, make cover clickable to website --}}
+                                <a href="{{ $post->project_url }}" target="_blank" class="block relative h-64 overflow-hidden bg-gray-100 group/cover">
+                                    <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover grayscale group-hover/cover:grayscale-0 transition-all duration-300">
                                     
                                     {{-- Overlay with hover effect --}}
-                                    <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/20 transition flex items-center justify-center">
+                                    <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/10 transition flex items-center justify-center">
                                         <span class="opacity-0 group-hover/cover:opacity-100 transition bg-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">
                                             Visit Website →
                                         </span>
                                     </div>
                                     
                                     {{-- Category badge --}}
-                                    <div class="absolute bottom-4 left-4 right-4 z-10">
+                                    <div class="absolute bottom-4 left-4 right-4">
                                         <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium shadow-lg">{{ $post->category->name }}</span>
                                     </div>
                                 </a>
@@ -298,7 +332,7 @@
                             <div class="flex flex-wrap justify-center sm:justify-start gap-2">
                                 <span class="px-3 py-1 bg-black text-white text-sm font-semibold">Web Developer</span>
                                 <span class="px-3 py-1 bg-black text-white text-sm font-semibold">Music Arranger</span>
-                                <span class="px-3 py-1 bg-black text-white text-sm font-semibold">Song Writer</span>
+                                <span class="px-3 py-1 bg-black text-white text-sm font-semibold">Pencipta Lagu</span>
                             </div>
                             <p class="text-xs text-gray-600 italic">
                                 Pengembang Web | Penata Musik | Penulis Lagu
@@ -641,6 +675,23 @@
             shakeMessageButton();
             setInterval(shakeMessageButton, 10000);
         }, 5000);
+
+        // Shake DIJUAL badges every 10 seconds
+        function shakeDijualBadges() {
+            const badges = document.querySelectorAll('.badge-dijual');
+            badges.forEach(badge => {
+                badge.classList.add('animate-shake');
+                setTimeout(() => {
+                    badge.classList.remove('animate-shake');
+                }, 1000);
+            });
+        }
+
+        // Start shaking badges after 3 seconds, then every 10 seconds
+        setTimeout(() => {
+            shakeDijualBadges();
+            setInterval(shakeDijualBadges, 10000);
+        }, 3000);
     </script>
 
     <style>
