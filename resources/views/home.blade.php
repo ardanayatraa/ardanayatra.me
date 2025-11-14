@@ -1,21 +1,21 @@
 <x-layouts.app>
     <!-- Welcome Modal -->
     @if(!$hasIntroduced && !auth()->check())
-    <div id="welcomeModal" class="fixed inset-0 bg-black/20 backdrop-blur-md flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h2 class="text-3xl font-bold mb-4">Halo! 👋</h2>
-            <p class="text-gray-600 mb-6">Sebelum masuk, kenalan dulu yuk! Saya ingin tahu siapa yang berkunjung ke sini 😊</p>
+    <div id="welcomeModal" class="fixed inset-0 bg-black/20 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg p-5 sm:p-8 max-w-md w-full">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Halo! 👋</h2>
+            <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Sebelum masuk, kenalan dulu yuk! Saya ingin tahu siapa yang berkunjung ke sini 😊</p>
             
             <form id="introForm" onsubmit="submitIntro(event)">
                 @csrf
-                <div class="mb-6">
+                <div class="mb-4 sm:mb-6">
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Siapa nama Anda?</label>
                     <input type="text" id="name" name="name" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                           class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm sm:text-base"
                            placeholder="Masukkan nama Anda...">
                 </div>
                 
-                <button type="submit" class="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition">
+                <button type="submit" class="w-full bg-black text-white py-2.5 sm:py-3 rounded-lg font-medium hover:bg-gray-800 transition text-sm sm:text-base">
                     Masuk
                 </button>
             </form>
