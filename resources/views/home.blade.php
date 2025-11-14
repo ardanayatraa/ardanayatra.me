@@ -803,11 +803,11 @@
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
         .mode-btn {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.7);
         }
         .mode-btn.active {
-            background: white;
-            color: #1f2937;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
         }
         
         /* Shake animation */
