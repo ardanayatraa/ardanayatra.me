@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ardanayatra-v1';
+const CACHE_NAME = 'tridanta-studio-v1';
 const urlsToCache = [
   '/',
   '/manifest.json',

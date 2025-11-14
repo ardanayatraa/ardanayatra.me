@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="/icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Ardana Yatra">
+    <meta name="apple-mobile-web-app-title" content="Tridanta Studio">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -22,7 +22,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="{{ route('home') }}" class="text-2xl font-bold text-gray-900">
-                    ardanayatra.me
+                    Tridanta Studio
                 </a>
                 <button onclick="openAboutModal()" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black transition">
                     <span class="hidden sm:inline">Siapa Saya? Yuk Kenalan</span>
