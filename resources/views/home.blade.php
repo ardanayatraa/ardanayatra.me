@@ -599,7 +599,11 @@
                 musicContent.classList.add('hidden');
                 heroTitle.textContent = 'Coding Projects';
                 heroSubtitle.textContent = 'Yang butuh jasa pembuatan website bisa langsung hubungi kontak tertera (business only).';
-                heroSection.className = 'bg-stailo-green text-white py-12 md:py-20 border-b border-green-900';
+                
+                // Random color for coding mode
+                const colors = ['bg-color-red', 'bg-color-yellow', 'bg-color-green'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                heroSection.className = `${randomColor} text-white py-12 md:py-20 border-b border-gray-800`;
             }
             
             // Save preference
@@ -800,8 +804,22 @@
 
     <style>
         .bg-stailo-green {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background-color: #10b981;
+            transition: background-color 1s ease-in-out;
         }
+        
+        .bg-color-red {
+            background-color: #ef4444 !important;
+        }
+        
+        .bg-color-yellow {
+            background-color: #eab308 !important;
+        }
+        
+        .bg-color-green {
+            background-color: #10b981 !important;
+        }
+        
         .mode-btn {
             color: rgba(255, 255, 255, 0.7);
         }
