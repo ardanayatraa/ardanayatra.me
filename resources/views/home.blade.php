@@ -599,7 +599,7 @@
                 musicContent.classList.add('hidden');
                 heroTitle.textContent = 'Coding Projects';
                 heroSubtitle.textContent = 'Yang butuh jasa pembuatan website bisa langsung hubungi kontak tertera (business only).';
-                heroSection.className = 'bg-stailo-green text-white py-12 md:py-20 border-b border-green-900';
+                heroSection.className = 'bg-black text-white py-12 md:py-20 border-b border-gray-800';
             }
             
             // Save preference
