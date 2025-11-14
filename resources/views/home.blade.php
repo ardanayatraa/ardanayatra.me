@@ -599,7 +599,7 @@
                 musicContent.classList.add('hidden');
                 heroTitle.textContent = 'Coding Projects';
                 heroSubtitle.textContent = 'Yang butuh jasa pembuatan website bisa langsung hubungi kontak tertera (business only).';
-                heroSection.className = 'bg-maroon text-white py-12 md:py-20 border-b border-red-900';
+                heroSection.className = 'bg-stailo-green text-white py-12 md:py-20 border-b border-green-900';
             }
             
             // Save preference
@@ -799,8 +799,8 @@
     </script>
 
     <style>
-        .bg-maroon {
-            background-color: #800000;
+        .bg-stailo-green {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
         .mode-btn {
             color: rgba(255, 255, 255, 0.6);
