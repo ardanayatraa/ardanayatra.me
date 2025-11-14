@@ -218,14 +218,38 @@
                         <div class="min-w-full">
                             <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:border-black transition">
                                 @if($post->cover_type === 'image' && $post->cover_image)
-                                    <div class="h-96 overflow-hidden bg-gray-100">
-                                        <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
-                                    </div>
+                                    {{-- Has cover image --}}
+                                    @if($post->project_url)
+                                        <a href="{{ $post->project_url }}" target="_blank" class="block h-96 overflow-hidden bg-gray-100 relative group/cover">
+                                            <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                                            <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/10 transition flex items-center justify-center">
+                                                <span class="opacity-0 group-hover/cover:opacity-100 transition bg-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">
+                                                    Visit Website →
+                                                </span>
+                                            </div>
+                                        </a>
+                                    @else
+                                        <div class="h-96 overflow-hidden bg-gray-100">
+                                            <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                                        </div>
+                                    @endif
                                 @elseif($post->cover_type === 'embed' && $post->embed_url)
+                                    {{-- Has video embed --}}
                                     <div class="h-96 bg-black">
                                         <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
                                     </div>
+                                @elseif($post->project_url)
+                                    {{-- No cover but has project URL - show iframe --}}
+                                    <a href="{{ $post->project_url }}" target="_blank" class="block h-96 overflow-hidden bg-white relative group/cover">
+                                        <iframe src="{{ $post->project_url }}" class="w-full h-full pointer-events-none scale-50 origin-top-left" style="width: 200%; height: 200%;" frameborder="0"></iframe>
+                                        <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/10 transition flex items-center justify-center">
+                                            <span class="opacity-0 group-hover/cover:opacity-100 transition bg-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">
+                                                Visit Website →
+                                            </span>
+                                        </div>
+                                    </a>
                                 @else
+                                    {{-- No cover and no project URL --}}
                                     <div class="h-96 bg-gray-900"></div>
                                 @endif
                                 <a href="{{ route('posts.show', $post->slug) }}" class="block p-6 hover:bg-gray-50 transition">
@@ -260,10 +284,47 @@
                 @foreach($featuredPosts->where('category.slug', 'coding') as $post)
                     <div class="group">
                         <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-black transition-all duration-300">
-                            @if($post->project_url && $post->cover_image)
-                                {{-- If has project URL, make cover clickable to website --}}
-                                <a href="{{ $post->project_url }}" target="_blank" class="block relative h-64 overflow-hidden bg-gray-100 group/cover">
-                                    <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover grayscale group-hover/cover:grayscale-0 transition-all duration-300">
+                            {{-- Cover Section --}}
+                            @if($post->cover_type === 'image' && $post->cover_image)
+                                {{-- Has cover image --}}
+                                @if($post->project_url)
+                                    {{-- Cover clickable to project URL --}}
+                                    <a href="{{ $post->project_url }}" target="_blank" class="block relative h-64 overflow-hidden bg-gray-100 group/cover">
+                                        <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover grayscale group-hover/cover:grayscale-0 transition-all duration-300">
+                                        
+                                        {{-- Overlay with hover effect --}}
+                                        <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/10 transition flex items-center justify-center">
+                                            <span class="opacity-0 group-hover/cover:opacity-100 transition bg-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">
+                                                Visit Website →
+                                            </span>
+                                        </div>
+                                        
+                                        {{-- Category badge --}}
+                                        <div class="absolute bottom-4 left-4 right-4">
+                                            <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium shadow-lg">{{ $post->category->name }}</span>
+                                        </div>
+                                    </a>
+                                @else
+                                    {{-- Just display cover --}}
+                                    <div class="relative h-64 overflow-hidden bg-gray-100">
+                                        <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300">
+                                        <div class="absolute bottom-4 left-4 right-4">
+                                            <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium">{{ $post->category->name }}</span>
+                                        </div>
+                                    </div>
+                                @endif
+                            @elseif($post->cover_type === 'embed' && $post->embed_url)
+                                {{-- Has video embed --}}
+                                <div class="relative h-64 overflow-hidden bg-black">
+                                    <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <span class="inline-block px-3 py-1 bg-white/90 text-black text-xs font-medium">{{ $post->category->name }}</span>
+                                    </div>
+                                </div>
+                            @elseif($post->project_url)
+                                {{-- No cover but has project URL - show iframe of website --}}
+                                <a href="{{ $post->project_url }}" target="_blank" class="block relative h-64 overflow-hidden bg-white group/cover">
+                                    <iframe src="{{ $post->project_url }}" class="w-full h-full pointer-events-none scale-50 origin-top-left" style="width: 200%; height: 200%;" frameborder="0"></iframe>
                                     
                                     {{-- Overlay with hover effect --}}
                                     <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/10 transition flex items-center justify-center">
@@ -278,20 +339,15 @@
                                     </div>
                                 </a>
                             @else
-                                {{-- No project URL, just display cover --}}
-                                <div class="relative h-64 overflow-hidden bg-gray-100">
-                                    @if($post->cover_type === 'image' && $post->cover_image)
-                                        <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300">
-                                    @elseif($post->cover_type === 'embed' && $post->embed_url)
-                                        <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
-                                    @else
-                                        <div class="w-full h-full bg-gray-900"></div>
-                                    @endif
+                                {{-- No cover and no project URL --}}
+                                <div class="relative h-64 overflow-hidden bg-gray-900">
                                     <div class="absolute bottom-4 left-4 right-4">
-                                        <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium">{{ $post->category->name }}</span>
+                                        <span class="inline-block px-3 py-1 bg-white text-black text-xs font-medium">{{ $post->category->name }}</span>
                                     </div>
                                 </div>
                             @endif
+                            
+                            {{-- Post Info --}}
                             <a href="{{ route('posts.show', $post->slug) }}" class="block p-6 hover:bg-gray-50 transition">
                                 <h3 class="text-xl font-bold mb-2 hover:underline">{{ $post->title }}</h3>
                                 <p class="text-gray-600 text-sm line-clamp-2">{{ Str::limit($post->description, 100) }}</p>
