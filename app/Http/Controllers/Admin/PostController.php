@@ -60,11 +60,13 @@ class PostController extends Controller
         ]);
 
         // Handle file upload
-        if ($request->hasFile('cover_upload') && $validated['cover_type'] === 'upload') {
-            $file = $request->file('cover_upload');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/covers'), $filename);
-            $validated['cover_image'] = '/uploads/covers/' . $filename;
+        if ($validated['cover_type'] === 'upload') {
+            if ($request->hasFile('cover_upload')) {
+                $file = $request->file('cover_upload');
+                $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/covers'), $filename);
+                $validated['cover_image'] = '/uploads/covers/' . $filename;
+            }
             $validated['cover_type'] = 'image'; // Store as image type
         }
 
@@ -107,19 +109,21 @@ class PostController extends Controller
         ]);
 
         // Handle file upload
-        if ($request->hasFile('cover_upload') && $validated['cover_type'] === 'upload') {
-            // Delete old uploaded file if exists
-            if ($post->cover_image && str_starts_with($post->cover_image, '/uploads/covers/')) {
-                $oldFile = public_path($post->cover_image);
-                if (file_exists($oldFile)) {
-                    unlink($oldFile);
+        if ($validated['cover_type'] === 'upload') {
+            if ($request->hasFile('cover_upload')) {
+                // Delete old uploaded file if exists
+                if ($post->cover_image && str_starts_with($post->cover_image, '/uploads/covers/')) {
+                    $oldFile = public_path($post->cover_image);
+                    if (file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
                 }
+                
+                $file = $request->file('cover_upload');
+                $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/covers'), $filename);
+                $validated['cover_image'] = '/uploads/covers/' . $filename;
             }
-            
-            $file = $request->file('cover_upload');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/covers'), $filename);
-            $validated['cover_image'] = '/uploads/covers/' . $filename;
             $validated['cover_type'] = 'image'; // Store as image type
         }
 
