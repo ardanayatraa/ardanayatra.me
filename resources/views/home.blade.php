@@ -800,7 +800,7 @@
 
     <style>
         .bg-stailo-green {
-            background-color: #84cc16;
+            background-color: #E3DE61;
         }
         
         .mode-btn {
