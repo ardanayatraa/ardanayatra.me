@@ -90,7 +90,7 @@
                             <a href="{{ route('posts.show', $post->slug) }}" class="block">
                                 <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:border-black transition">
                                     @if($post->cover_type === 'image' && $post->cover_image)
-                                        <div class="relative h-96 overflow-hidden bg-gray-100">
+                                        <div class="relative h-56 sm:h-72 md:h-80 lg:h-96 overflow-hidden bg-gray-100">
                                             <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
                                             @if($post->is_for_sale)
                                                 <div class="absolute top-4 right-4">
@@ -99,7 +99,7 @@
                                             @endif
                                         </div>
                                     @elseif($post->cover_type === 'embed' && $post->embed_url)
-                                        <div class="relative h-96 bg-black">
+                                        <div class="relative h-56 sm:h-72 md:h-80 lg:h-96 bg-black">
                                             <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
                                             @if($post->is_for_sale)
                                                 <div class="absolute top-4 right-4">
@@ -108,7 +108,7 @@
                                             @endif
                                         </div>
                                     @else
-                                        <div class="h-96 bg-gray-900"></div>
+                                        <div class="h-56 sm:h-72 md:h-80 lg:h-96 bg-gray-900"></div>
                                     @endif
                                     <div class="p-6">
                                         <div class="flex flex-wrap items-center gap-2 mb-3">
@@ -121,8 +121,8 @@
                                                 <span class="inline-block px-3 py-1 bg-indigo-600 text-white text-xs font-medium rounded">Arranger & Pencipta Lagu</span>
                                             @endif
                                         </div>
-                                        <h3 class="text-2xl font-bold mb-2">{{ $post->title }}</h3>
-                                        <p class="text-gray-600">{{ Str::limit($post->description, 150) }}</p>
+                                        <h3 class="text-xl sm:text-2xl font-bold mb-2">{{ $post->title }}</h3>
+                                        <p class="text-sm sm:text-base text-gray-600">{{ Str::limit($post->description, 150) }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -220,7 +220,7 @@
                                 @if($post->cover_type === 'image' && $post->cover_image)
                                     {{-- Has cover image --}}
                                     @if($post->project_url)
-                                        <a href="{{ $post->project_url }}" target="_blank" class="block h-96 overflow-hidden bg-gray-100 relative group/cover">
+                                        <a href="{{ $post->project_url }}" target="_blank" class="block h-56 sm:h-72 md:h-80 lg:h-96 overflow-hidden bg-gray-100 relative group/cover">
                                             <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
                                             <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/10 transition flex items-center justify-center">
                                                 <span class="opacity-0 group-hover/cover:opacity-100 transition bg-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">
@@ -229,18 +229,18 @@
                                             </div>
                                         </a>
                                     @else
-                                        <div class="h-96 overflow-hidden bg-gray-100">
+                                        <div class="h-56 sm:h-72 md:h-80 lg:h-96 overflow-hidden bg-gray-100">
                                             <img src="{{ $post->cover_image }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
                                         </div>
                                     @endif
                                 @elseif($post->cover_type === 'embed' && $post->embed_url)
                                     {{-- Has video embed --}}
-                                    <div class="h-96 bg-black">
+                                    <div class="h-56 sm:h-72 md:h-80 lg:h-96 bg-black">
                                         <iframe src="{{ $post->formatted_embed_url }}" class="w-full h-full pointer-events-none" frameborder="0"></iframe>
                                     </div>
                                 @elseif($post->project_url)
                                     {{-- No cover but has project URL - show iframe --}}
-                                    <a href="{{ $post->project_url }}" target="_blank" class="block h-96 overflow-hidden bg-white relative group/cover">
+                                    <a href="{{ $post->project_url }}" target="_blank" class="block h-56 sm:h-72 md:h-80 lg:h-96 overflow-hidden bg-white relative group/cover">
                                         <iframe src="{{ $post->project_url }}" class="w-full h-full pointer-events-none scale-50 origin-top-left" style="width: 200%; height: 200%;" frameborder="0"></iframe>
                                         <div class="absolute inset-0 bg-black/0 group-hover/cover:bg-black/10 transition flex items-center justify-center">
                                             <span class="opacity-0 group-hover/cover:opacity-100 transition bg-white px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">
@@ -250,12 +250,12 @@
                                     </a>
                                 @else
                                     {{-- No cover and no project URL --}}
-                                    <div class="h-96 bg-gray-900"></div>
+                                    <div class="h-56 sm:h-72 md:h-80 lg:h-96 bg-gray-900"></div>
                                 @endif
-                                <a href="{{ route('posts.show', $post->slug) }}" class="block p-6 hover:bg-gray-50 transition">
+                                <a href="{{ route('posts.show', $post->slug) }}" class="block p-4 sm:p-6 hover:bg-gray-50 transition">
                                     <span class="inline-block px-3 py-1 bg-black text-white text-xs font-medium rounded mb-3">{{ $post->category->name }}</span>
-                                    <h3 class="text-2xl font-bold mb-2 hover:underline">{{ $post->title }}</h3>
-                                    <p class="text-gray-600">{{ Str::limit($post->description, 150) }}</p>
+                                    <h3 class="text-xl sm:text-2xl font-bold mb-2 hover:underline">{{ $post->title }}</h3>
+                                    <p class="text-sm sm:text-base text-gray-600">{{ Str::limit($post->description, 150) }}</p>
                                 </a>
                             </div>
                         </div>
