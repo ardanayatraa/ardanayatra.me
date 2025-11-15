@@ -42,12 +42,32 @@ class HomeController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        Visitor::create([
-            'name' => $validated['name'],
-            'session_id' => $request->session()->getId(),
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-        ]);
+        $ipAddress = $request->ip();
+        
+        // Jangan simpan ke database jika nama adalah MDY (admin)
+        if (strtoupper($validated['name']) !== 'MDY') {
+            // Cek apakah IP sudah pernah berkunjung
+            $existingVisitor = Visitor::where('ip_address', $ipAddress)->first();
+            
+            if ($existingVisitor) {
+                // Increment visit count jika IP sama
+                $existingVisitor->increment('visit_count');
+                $existingVisitor->update([
+                    'name' => $validated['name'],
+                    'session_id' => $request->session()->getId(),
+                    'user_agent' => $request->userAgent(),
+                ]);
+            } else {
+                // Buat visitor baru
+                Visitor::create([
+                    'name' => $validated['name'],
+                    'session_id' => $request->session()->getId(),
+                    'ip_address' => $ipAddress,
+                    'user_agent' => $request->userAgent(),
+                    'visit_count' => 1,
+                ]);
+            }
+        }
 
         $request->session()->put('visitor_name', $validated['name']);
 

@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     
     // Visitors
     Route::get('/visitors', [\App\Http\Controllers\Admin\VisitorController::class, 'index'])->name('visitors.index');
+    Route::delete('/visitors/{visitor}', [\App\Http\Controllers\Admin\VisitorController::class, 'destroy'])->name('visitors.destroy');
 });
 
 require __DIR__.'/auth.php';

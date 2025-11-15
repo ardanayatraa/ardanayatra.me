@@ -86,6 +86,9 @@
                                         <div class="flex items-center gap-2 mb-2">
                                             @if($message->visitor)
                                                 <span class="px-2 py-0.5 bg-gray-900 text-white text-xs font-medium rounded">{{ $message->visitor->name }}</span>
+                                                @if(strtoupper($message->visitor->name) === 'MDY')
+                                                    <span class="px-2 py-0.5 bg-red-100 text-red-800 text-xs font-medium rounded">ADMIN</span>
+                                                @endif
                                             @else
                                                 <span class="px-2 py-0.5 bg-gray-200 text-gray-600 text-xs font-medium rounded">Anonymous</span>
                                             @endif

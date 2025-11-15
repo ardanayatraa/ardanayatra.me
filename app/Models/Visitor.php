@@ -11,6 +11,7 @@ class Visitor extends Model
         'session_id',
         'ip_address',
         'user_agent',
+        'visit_count',
     ];
 
     public function secretMessages()
