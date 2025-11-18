@@ -14,11 +14,17 @@ class HomeController extends Controller
     {
         $categories = Category::withCount(['posts' => fn($q) => $q->published()])->get();
         
-        $featuredPosts = Post::with(['category', 'user'])
+        // Get all published posts
+        $allPosts = Post::with(['category', 'user'])
             ->published()
             ->latest('published_at')
-            ->take(6)
             ->get();
+        
+        // Separate music and coding posts
+        $musicPosts = $allPosts->filter(fn($post) => $post->category->slug !== 'coding');
+        $codingPosts = $allPosts->filter(fn($post) => $post->category->slug === 'coding');
+        
+        $featuredPosts = $allPosts->take(6);
 
         // Get all messages for popup notifications
         $messages = SecretMessage::with('visitor')
@@ -33,7 +39,7 @@ class HomeController extends Controller
         // Check if visitor has introduced themselves
         $hasIntroduced = $request->session()->has('visitor_name');
 
-        return view('home', compact('categories', 'featuredPosts', 'messages', 'hasIntroduced'));
+        return view('home', compact('categories', 'featuredPosts', 'musicPosts', 'codingPosts', 'messages', 'hasIntroduced'));
     }
 
     public function storeVisitor(Request $request)

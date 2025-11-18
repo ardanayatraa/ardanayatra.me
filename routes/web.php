@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaLinkController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\FretBubbleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SecretMessageController;
@@ -17,6 +18,14 @@ Route::post('/visitor', [HomeController::class, 'storeVisitor'])->name('visitor.
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/category/{slug}', [PostController::class, 'category'])->name('posts.category');
+
+// FretBubble - Chord Diagram Generator
+Route::get('/fretbubble', [FretBubbleController::class, 'index'])->name('fretbubble.index');
+Route::get('/fretbubble/presets', [FretBubbleController::class, 'getPresets'])->name('fretbubble.presets');
+Route::get('/fretbubble/presets/{id}', [FretBubbleController::class, 'getPreset'])->name('fretbubble.preset');
+
+// Chord Learning
+Route::get('/learningchord', [\App\Http\Controllers\ChordLearningController::class, 'index'])->name('chord-learning.index');
 
 // Anonymous message routes
 Route::get('/message', [SecretMessageController::class, 'create'])->name('messages.create');
@@ -38,6 +47,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    
+    // Chord Presets
+    Route::resource('chord-presets', \App\Http\Controllers\Admin\ChordPresetController::class);
     
     // Messages
     Route::get('/messages', [AdminSecretMessageController::class, 'index'])->name('messages.index');

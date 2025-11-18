@@ -85,7 +85,7 @@
             <h3 class="text-2xl font-bold mb-6">Latest</h3>
             <div class="relative overflow-hidden rounded-lg">
                 <div id="musicSlider" class="flex transition-transform duration-500 ease-in-out">
-                    @foreach($featuredPosts->where('category.slug', '!=', 'coding')->take(3) as $post)
+                    @foreach($musicPosts->take(3) as $post)
                         <div class="min-w-full">
                             <a href="{{ route('posts.show', $post->slug) }}" class="block">
                                 <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:border-black transition">
@@ -130,7 +130,7 @@
                     @endforeach
                 </div>
                 
-                @if($featuredPosts->where('category.slug', '!=', 'coding')->count() > 1)
+                @if($musicPosts->count() > 1)
                 <button onclick="prevSlide('music')" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg z-10">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -214,7 +214,7 @@
             <h3 class="text-2xl font-bold mb-6">Latest</h3>
             <div class="relative overflow-hidden rounded-lg">
                 <div id="codingSlider" class="flex transition-transform duration-500 ease-in-out">
-                    @foreach($featuredPosts->where('category.slug', 'coding')->take(3) as $post)
+                    @foreach($codingPosts->take(3) as $post)
                         <div class="min-w-full">
                             <div class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden hover:border-black transition">
                                 @if($post->cover_type === 'image' && $post->cover_image)
@@ -262,7 +262,7 @@
                     @endforeach
                 </div>
                 
-                @if($featuredPosts->where('category.slug', 'coding')->count() > 1)
+                @if($codingPosts->count() > 1)
                 <button onclick="prevSlide('coding')" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-3 rounded-full shadow-lg z-10">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>

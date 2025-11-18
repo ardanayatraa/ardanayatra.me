@@ -28,5 +28,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Coding',
             'slug' => 'coding',
         ]);
+
+        // Seed chord presets
+        $this->call(ChordPresetSeeder::class);
     }
 }
