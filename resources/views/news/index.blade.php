@@ -1,23 +1,23 @@
 <x-layouts.app>
-    <div class="min-h-screen bg-black py-8 px-4">
+    <div class="min-h-screen bg-white py-8 px-4">
         <div class="container mx-auto max-w-7xl">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-white mb-2">Tridanta FastRead</h1>
-                <p class="text-gray-400">Baca cepat, dapat ilmu yang berguna</p>
+                <h1 class="text-4xl font-bold text-black mb-2">FastRead</h1>
+                <p class="text-gray-600">Baca cepat, dapat ilmu yang berguna</p>
             </div>
 
             <!-- Search & Filter -->
-            <div class="bg-white rounded-xl p-4 mb-6 border-2 border-black shadow-lg">
+            <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200 shadow-sm">
                 <form action="{{ route('news.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari artikel..."
-                           class="flex-1 bg-white border-2 border-black text-black rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-black">
+                           class="flex-1 bg-white border border-gray-300 text-black rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-black">
                     
-                    <select name="category" class="bg-white border-2 border-black text-black rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-black">
+                    <select name="category" class="bg-white border border-gray-300 text-black rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-black">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
-                                {{ $category->name }} ({{ $category->posts_count }})
+                                {{ $category->name }}
                             </option>
                         @endforeach
                     </select>
@@ -33,11 +33,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     @foreach($news as $article)
                         <a href="{{ route('news.show', $article->slug) }}" class="group">
-                            <div class="bg-white border-2 border-black rounded-lg overflow-hidden hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+                            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg hover:border-black transition-all duration-300 h-full flex flex-col">
                                 @if($article->image)
                                     <div class="relative w-full h-48 overflow-hidden bg-gray-100">
                                         <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" 
-                                             class="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-300">
+                                             class="w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-300">
                                         @if($article->category)
                                             <div class="absolute top-4 left-4">
                                                 <span class="inline-block px-3 py-1 bg-black text-white text-xs font-bold">{{ $article->category->name }}</span>
@@ -45,13 +45,13 @@
                                         @endif
                                     </div>
                                 @else
-                                    <div class="relative h-48 bg-gray-900 flex items-center justify-center">
-                                        <svg class="w-16 h-16 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="relative h-48 bg-gray-100 flex items-center justify-center">
+                                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                                         </svg>
                                         @if($article->category)
                                             <div class="absolute top-4 left-4">
-                                                <span class="inline-block px-3 py-1 bg-white text-black text-xs font-bold">{{ $article->category->name }}</span>
+                                                <span class="inline-block px-3 py-1 bg-black text-white text-xs font-bold">{{ $article->category->name }}</span>
                                             </div>
                                         @endif
                                     </div>
@@ -89,11 +89,11 @@
                     {{ $news->links() }}
                 </div>
             @else
-                <div class="text-center py-12">
-                    <svg class="w-16 h-16 mx-auto text-gray-700 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="text-center py-12 bg-gray-50 rounded-lg">
+                    <svg class="w-16 h-16 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <p class="text-gray-400">Tidak ada artikel ditemukan</p>
+                    <p class="text-gray-600">Tidak ada artikel ditemukan</p>
                 </div>
             @endif
         </div>
