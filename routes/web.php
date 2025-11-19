@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\FretBubbleController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SecretMessageController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,10 @@ Route::get('/fretbubble/presets/{id}', [FretBubbleController::class, 'getPreset'
 
 // Chord Learning
 Route::get('/learningchord', [\App\Http\Controllers\ChordLearningController::class, 'index'])->name('chord-learning.index');
+
+// Invoice Generator
+Route::get('/invoicego', [InvoiceController::class, 'index'])->name('invoicego.index');
+Route::post('/invoicego/generate', [InvoiceController::class, 'generate'])->name('invoicego.generate');
 
 // Anonymous message routes
 Route::get('/message', [SecretMessageController::class, 'create'])->name('messages.create');
