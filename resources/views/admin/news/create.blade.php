@@ -5,7 +5,7 @@
                 <div class="p-6">
                     <h2 class="text-2xl font-bold mb-6">Buat Artikel Baru</h2>
 
-                    <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data" id="newsForm">
                         @csrf
 
                         <div class="mb-6">
@@ -28,7 +28,7 @@
 
                         <div class="mb-6">
                             <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Konten *</label>
-                            <textarea name="content" id="content" rows="20" required>{{ old('content') }}</textarea>
+                            <textarea name="content" id="content" rows="20">{{ old('content') }}</textarea>
                             @error('content')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -124,6 +124,16 @@
         .then(editor => {
             console.log('CKEditor initialized successfully');
             window.editor = editor;
+            
+            // Form validation
+            document.getElementById('newsForm').addEventListener('submit', function(e) {
+                const content = editor.getData();
+                if (!content || content.trim() === '') {
+                    e.preventDefault();
+                    alert('Konten artikel tidak boleh kosong!');
+                    return false;
+                }
+            });
         })
         .catch(error => {
             console.error('Error initializing CKEditor:', error);
