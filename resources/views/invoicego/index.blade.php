@@ -1,12 +1,12 @@
 <x-layouts.app>
-    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black py-12 px-4">
+    <div class="min-h-screen bg-black py-12 px-4">
         <div class="container mx-auto max-w-5xl">
             <div class="text-center mb-12">
                 <h1 class="text-5xl font-bold text-white mb-3">Generator Invoice</h1>
                 <p class="text-gray-400 text-lg">Buat invoice profesional dalam hitungan detik</p>
             </div>
 
-            <form action="{{ route('invoicego.generate') }}" method="POST" class="bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-2xl px-10 pt-8 pb-10 mb-4 border border-gray-700">
+            <form action="{{ route('invoicego.generate') }}" method="POST" class="bg-white shadow-2xl rounded-2xl px-10 pt-8 pb-10 mb-4 border-2 border-black">
             @csrf
 
             <!-- Company Information Section -->

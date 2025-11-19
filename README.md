@@ -57,3 +57,58 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+---
+
+## Tridanta FastRead
+
+**URL**: `/fastread` - Baca cepat, dapat ilmu yang berguna
+
+### Citation Management System
+
+Fitur **Daftar Pustaka** telah ditambahkan untuk artikel news. Setiap artikel dapat memiliki multiple citations/referensi yang diformat menggunakan APA style.
+
+#### Database Structure
+
+**Table: citations**
+- `news_id` - Foreign key ke tabel news
+- `author` - Nama penulis
+- `title` - Judul artikel/buku
+- `source` - Nama jurnal/penerbit
+- `year` - Tahun publikasi
+- `volume`, `issue`, `pages` - Detail publikasi jurnal
+- `doi` - Digital Object Identifier
+- `url` - URL sumber
+- `type` - Tipe referensi (journal, book, website, conference)
+- `order` - Urutan tampilan
+
+#### Features
+
+1. **Admin Panel**: Tambah/edit citations saat membuat/edit artikel
+2. **Auto-formatting**: Citations otomatis diformat sesuai APA style berdasarkan tipe
+3. **Multiple Types**: Support untuk jurnal, buku, website, dan conference papers
+4. **Public Display**: Daftar pustaka ditampilkan di akhir artikel
+
+#### Usage
+
+```php
+// Menambahkan citation ke artikel
+$news->citations()->create([
+    'author' => 'Smith, J.',
+    'title' => 'Research Title',
+    'source' => 'Journal Name',
+    'year' => '2024',
+    'type' => 'journal',
+]);
+
+// Mendapatkan formatted citation
+$citation->formatted_citation; // Returns APA formatted string
+```
+
+#### Migration
+
+```bash
+php artisan migrate
+php artisan db:seed --class=NewsSeeder
+```

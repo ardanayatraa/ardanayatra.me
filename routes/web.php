@@ -32,6 +32,13 @@ Route::get('/learningchord', [\App\Http\Controllers\ChordLearningController::cla
 Route::get('/invoicego', [InvoiceController::class, 'index'])->name('invoicego.index');
 Route::post('/invoicego/generate', [InvoiceController::class, 'generate'])->name('invoicego.generate');
 
+// Metronome
+Route::get('/metronome', [\App\Http\Controllers\MetronomeController::class, 'index'])->name('metronome.index');
+
+// Tridanta FastRead
+Route::get('/fastread', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
+Route::get('/fastread/{slug}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
+
 // Anonymous message routes
 Route::get('/message', [SecretMessageController::class, 'create'])->name('messages.create');
 Route::post('/message', [SecretMessageController::class, 'store'])->name('messages.store');
@@ -69,6 +76,19 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Visitors
     Route::get('/visitors', [\App\Http\Controllers\Admin\VisitorController::class, 'index'])->name('visitors.index');
     Route::delete('/visitors/{visitor}', [\App\Http\Controllers\Admin\VisitorController::class, 'destroy'])->name('visitors.destroy');
+    
+    // Tridanta FastRead
+    Route::resource('fastread', \App\Http\Controllers\Admin\NewsController::class)->parameters([
+        'fastread' => 'news'
+    ])->names([
+        'index' => 'news.index',
+        'create' => 'news.create',
+        'store' => 'news.store',
+        'show' => 'news.show',
+        'edit' => 'news.edit',
+        'update' => 'news.update',
+        'destroy' => 'news.destroy',
+    ]);
 });
 
 require __DIR__.'/auth.php';

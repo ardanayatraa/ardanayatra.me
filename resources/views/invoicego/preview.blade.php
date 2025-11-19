@@ -1,5 +1,5 @@
 <x-layouts.app>
-    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black py-12 px-4">
+    <div class="min-h-screen bg-black py-12 px-4">
         <div class="container mx-auto max-w-5xl">
             <!-- Action Buttons -->
             <div class="mb-8 flex justify-between items-center">

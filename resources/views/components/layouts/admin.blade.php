@@ -88,6 +88,13 @@
                     <!-- Apps Section -->
                     <div class="pt-4">
                         <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Apps</p>
+                        <a href="{{ route('admin.news.index') }}" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition {{ request()->routeIs('admin.news.*') ? 'bg-white/10' : '' }}">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                            </svg>
+                            <span>FastRead</span>
+                        </a>
                         <a href="{{ route('admin.chord-presets.index') }}" 
                            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition {{ request()->routeIs('admin.chord-presets.*') ? 'bg-white/10' : '' }}">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
