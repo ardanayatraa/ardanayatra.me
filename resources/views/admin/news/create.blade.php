@@ -75,10 +75,31 @@
                         <div class="mb-6 border-t pt-6">
                             <div class="flex justify-between items-center mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Daftar Pustaka</label>
-                                <button type="button" onclick="addCitation()" class="bg-green-600 text-white px-4 py-1 rounded text-sm hover:bg-green-700">
-                                    + Tambah Referensi
-                                </button>
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="toggleJsonInput()" class="bg-blue-600 text-white px-4 py-1 rounded text-sm hover:bg-blue-700">
+                                        📋 Paste JSON
+                                    </button>
+                                    <button type="button" onclick="addCitation()" class="bg-green-600 text-white px-4 py-1 rounded text-sm hover:bg-green-700">
+                                        + Tambah Referensi
+                                    </button>
+                                </div>
                             </div>
+                            
+                            <!-- JSON Input Area -->
+                            <div id="json-input-area" class="hidden mb-4 p-4 bg-gray-50 border border-gray-300 rounded">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Paste JSON Citations</label>
+                                <textarea id="json-citations" rows="6" placeholder='Paste JSON di sini...' 
+                                          class="w-full px-3 py-2 border border-gray-300 rounded text-sm font-mono"></textarea>
+                                <div class="flex gap-2 mt-2">
+                                    <button type="button" onclick="applyJsonCitations()" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">
+                                        ✓ Apply
+                                    </button>
+                                    <button type="button" onclick="showJsonExample()" class="bg-gray-600 text-white px-4 py-2 rounded text-sm hover:bg-gray-700">
+                                        ? Contoh Format
+                                    </button>
+                                </div>
+                            </div>
+                            
                             <div id="citations-container"></div>
                         </div>
 
@@ -211,5 +232,136 @@
         document.querySelectorAll('.citation-number').forEach((el, index) => {
             el.textContent = index + 1;
         });
+    }
+
+    function toggleJsonInput() {
+        const jsonArea = document.getElementById('json-input-area');
+        jsonArea.classList.toggle('hidden');
+    }
+
+    function showJsonExample() {
+        const example = [
+            {
+                "author": "Smith, J., & Johnson, M.",
+                "title": "Artificial Intelligence in Modern Business",
+                "source": "Journal of Technology Management",
+                "year": "2024",
+                "volume": "15",
+                "issue": "3",
+                "pages": "245-260",
+                "doi": "10.1234/jtm.2024.15.3.245",
+                "url": "",
+                "type": "journal"
+            },
+            {
+                "author": "Brown, A.",
+                "title": "Digital Transformation in Southeast Asia",
+                "source": "Tech Publishers",
+                "year": "2023",
+                "volume": "",
+                "issue": "",
+                "pages": "",
+                "doi": "",
+                "url": "https://example.com",
+                "type": "book"
+            }
+        ];
+        
+        document.getElementById('json-citations').value = JSON.stringify(example, null, 2);
+        alert('Contoh format JSON telah diisi!\n\nField yang tersedia:\n- author (required)\n- title (required)\n- source (opsional)\n- year (opsional)\n- volume (opsional)\n- issue (opsional)\n- pages (opsional)\n- doi (opsional)\n- url (opsional)\n- type: journal/book/website/conference (default: journal)');
+    }
+
+    function applyJsonCitations() {
+        const jsonText = document.getElementById('json-citations').value.trim();
+        
+        if (!jsonText) {
+            alert('Paste JSON citations terlebih dahulu!');
+            return;
+        }
+        
+        try {
+            const citations = JSON.parse(jsonText);
+            
+            if (!Array.isArray(citations)) {
+                alert('Format JSON harus berupa array!');
+                return;
+            }
+            
+            // Clear existing citations
+            document.getElementById('citations-container').innerHTML = '';
+            citationIndex = 0;
+            
+            // Add each citation
+            citations.forEach((citation, index) => {
+                const container = document.getElementById('citations-container');
+                const citationHtml = `
+                    <div class="citation-item border p-4 rounded mb-4 bg-gray-50">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-sm">Referensi #<span class="citation-number">${index + 1}</span></span>
+                            <button type="button" onclick="removeCitation(this)" class="text-red-600 text-sm hover:text-red-800">Hapus</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <input type="text" name="citations[${index}][author]" placeholder="Penulis *" value="${citation.author || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div>
+                                <select name="citations[${index}][type]" class="w-full px-3 py-1 border rounded text-sm">
+                                    <option value="journal" ${citation.type === 'journal' ? 'selected' : ''}>Jurnal</option>
+                                    <option value="book" ${citation.type === 'book' ? 'selected' : ''}>Buku</option>
+                                    <option value="website" ${citation.type === 'website' ? 'selected' : ''}>Website</option>
+                                    <option value="conference" ${citation.type === 'conference' ? 'selected' : ''}>Conference</option>
+                                </select>
+                            </div>
+                            <div class="col-span-2">
+                                <input type="text" name="citations[${index}][title]" placeholder="Judul *" value="${citation.title || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div>
+                                <input type="text" name="citations[${index}][source]" placeholder="Sumber/Jurnal/Penerbit" value="${citation.source || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div>
+                                <input type="text" name="citations[${index}][year]" placeholder="Tahun" value="${citation.year || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div>
+                                <input type="text" name="citations[${index}][volume]" placeholder="Volume" value="${citation.volume || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div>
+                                <input type="text" name="citations[${index}][issue]" placeholder="Issue/Nomor" value="${citation.issue || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div>
+                                <input type="text" name="citations[${index}][pages]" placeholder="Halaman" value="${citation.pages || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div>
+                                <input type="text" name="citations[${index}][doi]" placeholder="DOI" value="${citation.doi || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                            <div class="col-span-2">
+                                <input type="url" name="citations[${index}][url]" placeholder="URL" value="${citation.url || ''}"
+                                       class="w-full px-3 py-1 border rounded text-sm">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', citationHtml);
+            });
+            
+            citationIndex = citations.length;
+            updateCitationNumbers();
+            
+            // Hide JSON input area
+            document.getElementById('json-input-area').classList.add('hidden');
+            document.getElementById('json-citations').value = '';
+            
+            alert(`Berhasil menambahkan ${citations.length} referensi!`);
+            
+        } catch (error) {
+            alert('Format JSON tidak valid!\n\nError: ' + error.message);
+        }
     }
 </script>
