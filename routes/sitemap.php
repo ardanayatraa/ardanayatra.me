@@ -7,8 +7,8 @@ use App\Models\Song;
 
 Route::get('/sitemap.xml', function() {
     $posts = Post::where('is_published', true)->get();
-    $news = News::where('is_published', true)->get();
-    $songs = Song::where('is_published', true)->get();
+    $news = News::where('status', 'published')->get();
+    $songs = Song::all();
     
     $sitemap = '<?xml version="1.0" encoding="UTF-8"?>';
     $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
