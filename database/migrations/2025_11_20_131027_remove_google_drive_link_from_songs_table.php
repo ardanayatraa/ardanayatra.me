@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('songs', function (Blueprint $table) {
-            $table->dropColumn('google_drive_link');
+            if (Schema::hasColumn('songs', 'google_drive_link')) {
+                $table->dropColumn('google_drive_link');
+            }
         });
     }
 
