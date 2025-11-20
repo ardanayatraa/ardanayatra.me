@@ -1,9 +1,9 @@
 <x-layouts.app>
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="bg-white rounded-lg shadow-lg p-8">
-            <h1 class="text-3xl font-bold mb-4">Send Anonymous Message</h1>
+            <h1 class="text-3xl font-bold mb-4">Kirim Pesan</h1>
             <p class="text-gray-600 mb-8">
-                Share your thoughts, feedback, or just say hi! Your message will be sent anonymously.
+                Bagikan pemikiran, feedback, atau sekedar say hi! Pesan Anda akan dikirim secara anonim.
             </p>
 
             @if(session('success'))
