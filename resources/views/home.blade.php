@@ -10,14 +10,19 @@
                 @csrf
                 <div class="mb-4 sm:mb-6">
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Siapa nama Anda?</label>
-                    <input type="text" id="name" name="name" required 
+                    <input type="text" id="name" name="name" 
                            class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm sm:text-base"
                            placeholder="Masukkan nama Anda...">
                 </div>
                 
-                <button type="submit" class="w-full bg-black text-white py-2.5 sm:py-3 rounded-lg font-medium hover:bg-gray-800 transition text-sm sm:text-base">
-                    Masuk
-                </button>
+                <div class="flex flex-col gap-2">
+                    <button type="submit" class="w-full bg-black text-white py-2.5 sm:py-3 rounded-lg font-medium hover:bg-gray-800 transition text-sm sm:text-base">
+                        Masuk
+                    </button>
+                    <button type="button" onclick="skipIntro()" class="w-full bg-white text-gray-700 py-2.5 sm:py-3 rounded-lg font-medium hover:bg-gray-100 transition text-sm sm:text-base border border-gray-300">
+                        Enggak ah, mau masuk aja!
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -521,6 +526,13 @@
             
             const form = event.target;
             const formData = new FormData(form);
+            const name = formData.get('name');
+            
+            // If name is empty, just skip
+            if (!name || name.trim() === '') {
+                skipIntro();
+                return;
+            }
             
             try {
                 const response = await fetch('{{ route("visitor.store") }}', {
@@ -531,7 +543,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        name: formData.get('name')
+                        name: name
                     })
                 });
                 
@@ -546,6 +558,18 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
+            }
+        }
+
+        function skipIntro() {
+            document.getElementById('welcomeModal').style.display = 'none';
+            hasIntroduced = true;
+            
+            // Enable message button
+            const messageButton = document.getElementById('messageButton');
+            if (messageButton) {
+                messageButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                messageButton.classList.add('hover:bg-gray-800', 'hover:scale-110');
             }
         }
 
