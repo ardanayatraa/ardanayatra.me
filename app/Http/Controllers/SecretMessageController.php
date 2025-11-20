@@ -22,8 +22,18 @@ class SecretMessageController extends Controller
             // Get visitor from session
             $visitor = Visitor::where('session_id', $request->session()->getId())->first();
             
+            // If no visitor exists and name is provided, create one
+            if (!$visitor && $request->has('name')) {
+                $visitor = Visitor::create([
+                    'name' => $request->name,
+                    'session_id' => $request->session()->getId(),
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                ]);
+            }
+            
             if (!$visitor) {
-                return back()->withErrors(['message' => 'Please refresh the page and introduce yourself first.']);
+                return back()->withErrors(['message' => 'Mohon isi nama Anda terlebih dahulu.'])->withInput();
             }
 
             // Check daily message limit (5 messages per day per visitor)
@@ -40,8 +50,12 @@ class SecretMessageController extends Controller
         }
 
         $validated = $request->validate([
+            'name' => 'nullable|string|max:255',
             'message' => 'required|string|max:1000',
         ]);
+        
+        // Remove name from validated data as it's not part of messages table
+        unset($validated['name']);
 
         // Get admin user (first user or specific admin)
         $admin = User::first();
