@@ -24,39 +24,22 @@
                 <a href="{{ route('home') }}" class="text-2xl font-bold text-gray-900">
                     Tridanta Studio
                 </a>
-                @php
-                    $currentRoute = request()->route() ? request()->route()->getName() : '';
-                    $pageTitle = 'Siapa Saya? Yuk Kenalan';
-                    $shortTitle = '👋';
-                    
-                    if ($currentRoute && str_contains($currentRoute, 'news')) {
-                        $pageTitle = 'FastRead';
-                        $shortTitle = 'FR';
-                    } elseif ($currentRoute && str_contains($currentRoute, 'fretbubble')) {
-                        $pageTitle = 'FretBubble';
-                        $shortTitle = 'FB';
-                    } elseif ($currentRoute && str_contains($currentRoute, 'chord-learning')) {
-                        $pageTitle = 'Chord Learning';
-                        $shortTitle = 'CL';
-                    } elseif ($currentRoute && str_contains($currentRoute, 'metronome')) {
-                        $pageTitle = 'Metronome';
-                        $shortTitle = 'MT';
-                    } elseif ($currentRoute && str_contains($currentRoute, 'invoicego')) {
-                        $pageTitle = 'InvoiceGo';
-                        $shortTitle = 'IG';
-                    } elseif ($currentRoute && str_contains($currentRoute, 'song')) {
-                        $pageTitle = 'My Song';
-                        $shortTitle = 'MS';
-                    }
-                @endphp
                 
-                <button onclick="openAboutModal()" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black transition">
-                    <span class="hidden sm:inline">{{ $pageTitle }}</span>
-                    <span class="sm:hidden">{{ $shortTitle }}</span>
-                </button>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ route('song.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black transition">
+                    Lagu Saya
+                    </a>
+                    <button onclick="openAboutModal()" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black transition">
+                        👋 Yuk Kenalan
+                    </button>
+                </div>
             </div>
+
+
         </div>
     </nav>
+
+
 
     <main>
         {{ $slot }}
