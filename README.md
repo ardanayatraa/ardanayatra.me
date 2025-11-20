@@ -112,3 +112,93 @@ $citation->formatted_citation; // Returns APA formatted string
 php artisan migrate
 php artisan db:seed --class=NewsSeeder
 ```
+
+---
+
+## My Song
+
+**URL**: `/song` - Daftar lagu ciptaan original yang belum terdaftar di agregator manapun
+
+### About
+
+Halaman ini menampilkan karya-karya original **I Made Ardana Yatra** sebagai pencipta lagu dan arranger yang belum pernah didaftarkan ke agregator musik manapun (Spotify, Apple Music, dll). Semua lagu dilindungi hak cipta.
+
+### Features
+
+- **Embedded Audio Player** - Lagu bisa langsung diputar di halaman tanpa perlu buka Google Drive
+- **Copyright Protection** - Badge copyright dan pemberitahuan hak cipta di setiap lagu
+- **Original Badge** - Menandakan lagu adalah karya original
+- **Auto-detect Google Drive URL** - Support berbagai format URL Google Drive
+- **Download Button** - Tombol download langsung dari Google Drive
+- Admin panel untuk CRUD lagu
+- Responsive design dengan card layout
+
+### Database Structure
+
+**Table: songs**
+- `title` - Judul lagu
+- `artist` - Nama artis
+- `audio_file` - Path file audio di Cloudflare R2
+- `cover_image` - Path cover image di Cloudflare R2
+- `views` - Jumlah views
+
+### Routes
+
+**Public:**
+- `GET /song` - Halaman daftar lagu
+
+**Admin:**
+- `GET /admin/songs` - Daftar lagu (admin)
+- `GET /admin/songs/create` - Form tambah lagu
+- `POST /admin/songs` - Simpan lagu baru
+- `GET /admin/songs/{id}/edit` - Form edit lagu
+- `PUT /admin/songs/{id}` - Update lagu
+- `DELETE /admin/songs/{id}` - Hapus lagu
+
+### Google Drive URL Format
+
+Model otomatis mendeteksi dan convert berbagai format URL Google Drive:
+- `https://drive.google.com/file/d/FILE_ID/view`
+- `https://drive.google.com/open?id=FILE_ID`
+- `https://drive.google.com/uc?id=FILE_ID`
+
+**Penting:** File di Google Drive harus di-set ke "Anyone with the link can view" agar bisa di-embed.
+
+### Cloudflare R2 Setup
+
+1. **Install AWS SDK:**
+```bash
+composer require league/flysystem-aws-s3-v3 "^3.0"
+```
+
+2. **Configure `.env`:**
+```env
+R2_ACCESS_KEY_ID=your_access_key
+R2_SECRET_ACCESS_KEY=your_secret_key
+R2_BUCKET=your_bucket_name
+R2_ENDPOINT=https://your_account_id.r2.cloudflarestorage.com
+R2_PUBLIC_URL=https://your_public_domain.com
+```
+
+3. **Run Migration:**
+```bash
+php artisan migrate
+php artisan db:seed --class=SongSeeder
+```
+
+### Usage
+
+```php
+// Audio URL (R2 or Google Drive fallback)
+$song->audio_url
+
+// Cover image URL
+$song->cover_url
+
+// Google Drive embed (fallback)
+$song->embed_url
+```
+
+### Upload Limits
+- Audio: MP3, WAV, OGG, M4A (max 50MB)
+- Cover: JPG, PNG (max 2MB)

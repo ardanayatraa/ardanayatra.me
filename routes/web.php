@@ -39,6 +39,99 @@ Route::get('/metronome', [\App\Http\Controllers\MetronomeController::class, 'ind
 Route::get('/fastread', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
 Route::get('/fastread/{slug}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
 
+// My Song
+Route::get('/song', [\App\Http\Controllers\SongController::class, 'index'])->name('song.index');
+Route::get('/song/{slug}', [\App\Http\Controllers\SongController::class, 'show'])->name('song.show');
+
+// Debug Songs
+Route::get('/debug-songs', function() {
+    $songs = \App\Models\Song::all(['id', 'title', 'audio_file', 'cover_image']);
+    return response()->json([
+        'total' => $songs->count(),
+        'songs' => $songs->map(function($s) {
+            return [
+                'id' => $s->id,
+                'title' => $s->title,
+                'audio_file' => $s->audio_file ?: 'NULL',
+                'audio_file_length' => strlen($s->audio_file ?? ''),
+                'cover_image' => $s->cover_image ?: 'NULL',
+            ];
+        })
+    ]);
+});
+
+// Test R2 Connection Page
+Route::get('/test-r2-connection', function() {
+    return view('test-r2-connection');
+});
+
+// Test R2 Connection API (temporary)
+Route::get('/test-r2', function() {
+    try {
+        // Get R2 config
+        $config = config('filesystems.disks.r2');
+        
+        // Test write
+        $testContent = 'Hello from Laravel! ' . now();
+        \Storage::disk('r2')->put('test.txt', $testContent);
+        
+        // Test read
+        $content = \Storage::disk('r2')->get('test.txt');
+        
+        // Test exists
+        $exists = \Storage::disk('r2')->exists('test.txt');
+        
+        // Test public URL
+        $publicUrl = \Storage::disk('r2')->url('test.txt');
+        
+        // Clean up
+        \Storage::disk('r2')->delete('test.txt');
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => '✅ R2 connection working!',
+            'config' => [
+                'bucket' => $config['bucket'],
+                'endpoint' => $config['endpoint'],
+                'public_url' => $config['url'],
+                'region' => $config['region'],
+            ],
+            'test_results' => [
+                'write' => 'OK',
+                'read' => $content === $testContent ? 'OK' : 'FAILED',
+                'exists' => $exists ? 'OK' : 'FAILED',
+                'delete' => 'OK',
+            ],
+            'public_url' => $publicUrl,
+            'note' => 'Jika semua OK, R2 siap digunakan!',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'config' => config('filesystems.disks.r2'),
+            'help' => [
+                'Cek R2_ACCESS_KEY_ID di .env',
+                'Cek R2_SECRET_ACCESS_KEY di .env',
+                'Cek R2_BUCKET sudah dibuat di Cloudflare',
+                'Cek R2_ENDPOINT format: https://ACCOUNT_ID.r2.cloudflarestorage.com',
+                'Jalankan: php artisan config:clear',
+            ],
+            'trace' => explode("\n", $e->getTraceAsString()),
+        ], 500);
+    }
+});
+
+// Test R2 Upload with Audio File
+Route::get('/test-r2-audio', function() {
+    return view('test-r2-audio');
+});
+
+Route::post('/test-r2-audio', [\App\Http\Controllers\UploadController::class, 'uploadAudio'])->name('test.r2.audio');
+
+// API Upload Cover
+Route::post('/api/upload-cover', [\App\Http\Controllers\UploadController::class, 'uploadCover']);
+
 // Anonymous message routes
 Route::get('/message', [SecretMessageController::class, 'create'])->name('messages.create');
 Route::post('/message', [SecretMessageController::class, 'store'])->name('messages.store');
@@ -89,6 +182,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         'update' => 'news.update',
         'destroy' => 'news.destroy',
     ]);
+    
+    // My Song
+    Route::resource('songs', \App\Http\Controllers\Admin\SongController::class);
 });
 
 require __DIR__.'/auth.php';

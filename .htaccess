@@ -1,0 +1,41 @@
+# Deny access to sensitive files
+<FilesMatch "^\.env">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Deny access to all .env files
+<Files ".env*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Deny access to composer files
+<FilesMatch "^composer\.(json|lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Deny access to package files
+<FilesMatch "^package(-lock)?\.json$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Deny access to git files
+<FilesMatch "^\.git">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Deny access to other sensitive files
+<FilesMatch "^(artisan|phpunit\.xml|\.editorconfig|\.gitignore|\.gitattributes)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Redirect all requests to public folder
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

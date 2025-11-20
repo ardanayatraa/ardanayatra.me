@@ -44,6 +44,9 @@
                     } elseif ($currentRoute && str_contains($currentRoute, 'invoicego')) {
                         $pageTitle = 'InvoiceGo';
                         $shortTitle = 'IG';
+                    } elseif ($currentRoute && str_contains($currentRoute, 'song')) {
+                        $pageTitle = 'My Song';
+                        $shortTitle = 'MS';
                     }
                 @endphp
                 
@@ -58,6 +61,56 @@
     <main>
         {{ $slot }}
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- About -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Tridanta Studio</h3>
+                    <p class="text-sm text-gray-400">
+                        Portfolio musik dan coding tools yang dibuat sepenuh hati oleh I Made Ardana Yatra.
+                    </p>
+                </div>
+                
+                <!-- Features -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Fitur</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{{ route('song.index') }}" class="text-gray-400 hover:text-white transition">My Songs</a></li>
+                        <li><a href="{{ route('news.index') }}" class="text-gray-400 hover:text-white transition">FastRead</a></li>
+                        <li><a href="{{ route('fretbubble.index') }}" class="text-gray-400 hover:text-white transition">FretBubble</a></li>
+                        <li><a href="{{ route('chord-learning.index') }}" class="text-gray-400 hover:text-white transition">Chord Learning</a></li>
+                        <li><a href="{{ route('metronome.index') }}" class="text-gray-400 hover:text-white transition">Metronome</a></li>
+                        <li><a href="{{ route('invoicego.index') }}" class="text-gray-400 hover:text-white transition">InvoiceGo</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Connect -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://www.tiktok.com/@ardanayatraa" target="_blank" class="text-gray-400 hover:text-white transition">TikTok @ardanayatraa</a></li>
+                        <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white transition">About Me</a></li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-4">
+                        Made with Code & Music
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="border-t border-gray-800 pt-6 text-center">
+                <p class="text-sm text-gray-400">
+                    © {{ date('Y') }} Tridanta Studio. All rights reserved.
+                </p>
+                <p class="text-xs text-gray-500 mt-2">
+                    Website dibuat sepenuh hati oleh <span class="font-semibold text-gray-300">I Made Ardana Yatra</span>
+                </p>
+            </div>
+        </div>
+    </footer>
 
     <!-- PWA Service Worker Registration -->
     <script>
